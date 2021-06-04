@@ -1,0 +1,25 @@
+{
+  "name": "xelies-server",
+  "version": "1.0.0",
+  "description": "Speeker backend nodejs",
+  "main": "./lib/router.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/speak-dev/xelies-server.git"
+  },
+  "author": "punchnox",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/speak-dev/xelies-server/issues"
+  },
+  "homepage": "https://github.com/speak-dev/xelies-server#readme",
+  "dependencies": {
+    "nanoexpress": "^5.0.5"
+  }
+}
