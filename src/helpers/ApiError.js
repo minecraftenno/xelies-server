@@ -8,19 +8,19 @@ module.exports = class ApiError {
         this.code = code
         this.message = msg
     }
-    static badrequest() {
+    static get badrequest() {
         return new ApiError(400, 'Bad request')
     }
-    static unauthorized() {
+    static get unauthorized() {
         return new ApiError(401, 'Unauthorized')
     }
-    static forbidden() {
+    static get forbidden() {
         return new ApiError(403, 'Forbidden')
     }
-    static nocontent() {
+    static get nocontent() {
         return new ApiError(203, 'No Content')
     }
-    static notfound() {
+    static get notfound() {
         return new ApiError(404, 'Not found')
     }
 }
