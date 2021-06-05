@@ -49,7 +49,7 @@ module.exports = (app) => {
                     if (e) throw e
 
                     new user({
-                        ID: user_id,
+                        id: user_id,
                         username: username,
                         email: {
                             iv: h.iv,
