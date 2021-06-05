@@ -1,17 +1,15 @@
 const jwt = require('jsonwebtoken'),
-ApiResponse = require('../../helpers/ApiResponse'),
+    ApiResponse = require('../../helpers/ApiResponse'),
     userm = require('../../models/user.model');
     Authorized = require("../../middlewares/authorization"),
     CheckAuth = require("../../middlewares/jwt"),
     {decrypt} = require("../../crypto/crypto");
 
 module.exports = (app) => {
-    app.get("/users/:user", Authorized, (req, res) => {
+    app.delete("/users/:user", Authorized, (req, res) => {
     
         if(req.password) {
             try {
-                
-
                 CheckAuth(req.headers.authorization, req.password)
             } catch(e) {
                 console.log(e)
@@ -29,32 +27,29 @@ module.exports = (app) => {
                 userm.findById(decoded.ID, (err, doc) => {
                     if(err) return res.status(503).send(ApiResponse.error);
                     if(doc) {
-                        const email = decrypt(doc.email.content, doc.email.iv)
-                        return res.status(200).json({
+                        const newuser = {
                             id: doc._id,
-                            email: email,
-                            username: doc.username,
-                            tag: doc.tag,
-                            avatar: doc.avatar,
+                            email: null,
+                            username: "Deleted User",
+                            tag: null,
+                            avatar: null,
                             created_at: doc.CreatedAt,
-                            status: doc.status
+                            status: null,
+                            friends: null,
+                            notifications: null
+                        }
+
+                        userm.findByIdAndUpdate(decoded.ID, newuser, (err, doc) => {
+                            if(!err) {res.status(202).send(ApiResponse.accepted) } else{res.status(503).send(ApiResponse.error)}
+                            
                         });
+                        return res.status(200).json();
                     } else {
                         return res.status(503).send(ApiResponse.error); //si ce code est exec mon middleware pue la queue sltcv
                     }
                 });
             } else {
-                userm.findById(user, (err, doc) => {
-                    if(err) return res.status(503).send(ApiResponse.error);
-                    return res.status(200).json({
-                        id: doc._id,
-                        username: doc.username,
-                        tag: doc.tag,
-                        avatar: doc.avatar,
-                        created_at: doc.CreatedAt,
-                        status: doc.status
-                    });
-                });
+                return res.status(405).send(ApiResponse.methodnotallowed);
             }
         }
     });

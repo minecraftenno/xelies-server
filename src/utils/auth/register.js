@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken'),
-    ApiError = require('../../helpers/ApiError'),
+    ApiResponse = require('../../helpers/ApiResponse'),
     user = require('../../models/user.model'),
     crypt = require('../../crypto/crypto'),
     bcrypt = require('bcrypt'),
@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken'),
 module.exports = (app) => {
 
     app.post('/register', (req, res, next) => {
-        if (!req.body) return res.status(400).json(ApiError.badrequest)
+        if (!req.body) return res.status(400).json(ApiResponse.badrequest)
         const {
             username,
             email,
@@ -17,13 +17,13 @@ module.exports = (app) => {
 
         //check
         if (!username) {
-            return res.status(400).json(new ApiError(400, 'No username field found.'))
+            return res.status(400).json(new ApiResponse(400, 'No username field found.'))
         } else if (!email) {
-            return res.status(400).json(new ApiError(400, 'No email field found.'))
+            return res.status(400).json(new ApiResponse(400, 'No email field found.'))
         } else if (!password) {
-            return res.status(400).json(new ApiError(400, 'No password field found.'))
+            return res.status(400).json(new ApiResponse(400, 'No password field found.'))
         } else if (password.length < 6) {
-            return res.status(400).json(new ApiError(400, 'The password given is too short.'))
+            return res.status(400).json(new ApiResponse(400, 'The password given is too short.'))
         }
 
         var h = crypt.encrypt(email, key)
@@ -74,75 +74,3 @@ module.exports = (app) => {
         })
     })
 }
-/*
-const jwt = require('jsonwebtoken'),
-    ApiError = require('../../helpers/ApiError'),
-    User = require('../../models/user.model'),
-    bcrypt = require('bcrypt')
-
-    function createid (length) {
-        let resultat = ''
-        const characters =
-          '0123456789'
-        for (let i = 0; i < length; i++) {
-          resultat += characters.charAt(Math.floor(Math.random() * characters.length))
-        }
-        return resultat
-      }
-      
-      module.exports = function (app) {
-        app.post('/api/register', function (req, res) {
-          const {
-            username,
-            email,
-            password
-          } = req.headers
-      
-          if (!username) {
-            return res.status(500).send(new ApiError(500, 'No username field found.'))
-          }
-          if (!email) {
-            return res.status(500).send(new ApiError(500, 'No email field found.'))
-          }
-          if (!password) {
-            return res.status(500).send(new ApiError(500, 'No password field found.'))
-          }
-          if (password.length < 8) {
-            return res.status(500).send(new ApiError(500, 'The password given is too short.'))
-          }
-      
-          User.findOne({
-            email: email
-          }).exec((err, doc) => {
-            if (err) {
-              return res.status(500).send(new ApiError(500, 'Error with database.'))
-            }
-      
-            if (doc) {
-              return res.status(500).send(new ApiError(500, 'The email given is already use in another account.'))
-            }
-      
-            const user = new User({
-              email: email,
-              username: username,
-              password: sha512(password),
-              id: geni(),
-              tag: createid(4),
-              bio: '',
-              custom_status: ''
-            })
-            user.save(function (err) {
-              if (err) {
-                return res.status(500).send(new ApiError(500, 'Error with database.'))
-              }
-            })
-      
-            res.status(200).json({
-              status: true,
-              message: 'Utilisateur enregistré',
-              user: user
-            })
-          })
-        })
-      }
-      */

@@ -12,6 +12,8 @@ u = new mongoose.Schema({
     bio: String,
     status: Number,
     CreatedAt: { default: Date.now(), type: Date }
+}, {
+    versionKey: false
 })
 
 module.exports = mongoose.model('user', u)
