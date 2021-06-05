@@ -1,7 +1,7 @@
 const mongoose = require('mongoose'),
 
 u = new mongoose.Schema({
-    id: Number,
+    _id: Number,
     email: { type: Object, required: true, unique: true },
     username: String,
     tag: String,

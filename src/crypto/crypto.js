@@ -14,7 +14,7 @@ const encrypt = (text, key) => {
 }
 
 const decrypt = (hash, key) => {
-
+//FIXME
     const decipher = crypto.createDecipheriv(algorithm, key, Buffer.from(hash.iv, 'hex')),
 
     decrpyted = Buffer.concat([decipher.update(Buffer.from(hash.content, 'hex')), decipher.final()])

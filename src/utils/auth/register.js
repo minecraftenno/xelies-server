@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken'),
     user = require('../../models/user.model'),
     crypt = require('../../crypto/crypto'),
     bcrypt = require('bcrypt'),
-    key = process.env.SECRET || require('../../../c.json').SECRET
+    key = process.env.SECRET || require('../../../c.json').SECRET;
 
 module.exports = (app) => {
 
     app.post('/register', (req, res, next) => {
-        if (!req.body) return res.status(503).json(ApiError.badrequest)
+        if (!req.body) return res.status(400).json(ApiError.badrequest)
         const {
             username,
             email,
@@ -17,13 +17,13 @@ module.exports = (app) => {
 
         //check
         if (!username) {
-            return res.status(503).json(new ApiError(503, 'No username field found.'))
+            return res.status(400).json(new ApiError(400, 'No username field found.'))
         } else if (!email) {
-            return res.status(503).json(new ApiError(503, 'No email field found.'))
+            return res.status(400).json(new ApiError(400, 'No email field found.'))
         } else if (!password) {
-            return res.status(503).json(new ApiError(503, 'No password field found.'))
+            return res.status(400).json(new ApiError(400, 'No password field found.'))
         } else if (password.length < 6) {
-            return res.status(503).json(new ApiError(503, 'The password given is too short.'))
+            return res.status(400).json(new ApiError(400, 'The password given is too short.'))
         }
 
         var h = crypt.encrypt(email, key)
@@ -34,9 +34,10 @@ module.exports = (app) => {
 
             const checkemail = doc.find(a => {
                 if (crypt.decrypt({
-                        iv: a.email.iv,
-                        content: a.email.content
-                    }, key) === email) return true
+                  iv: a.email.iv,
+                  content: a.email.content
+              }, key) === email) return true
+              
             })
             if (checkemail) return res.status(503).json({
                 code: 503,
@@ -49,7 +50,7 @@ module.exports = (app) => {
                     if (e) throw e
 
                     new user({
-                        id: user_id,
+                        _id: user_id,
                         username: username,
                         email: {
                             iv: h.iv,
@@ -58,7 +59,7 @@ module.exports = (app) => {
                         password: p
                     }).save((e, r) => {
                         if (e) return res.status(503)
-                        console.log(r)
+                   //     console.log(r)
                     })
                     let token = jwt.sign({
                         ID: user_id

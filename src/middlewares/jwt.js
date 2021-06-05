@@ -1,11 +1,12 @@
 const ApiError = require('../helpers/ApiError'),
     jwt = require('jsonwebtoken')
 
-module.exports = function CheckAuth(auth, secret) {
+module.exports = function (auth, secret) {
 
-    jwt.verify(auth, secret, (e, d) => {
-        if (e) return ApiError.unauthorized
-        return { decoded: d }
-    })
+    try {
+        return jwt.verify(auth, secret)
+    } catch(e) {
+        return ApiError.error;
+    }
 
 }
