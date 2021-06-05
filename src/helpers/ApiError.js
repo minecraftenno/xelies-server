@@ -1,10 +1,10 @@
 module.exports = class ApiError {
-     /**
+    /**
      * @constructs ApiError
      * @param {number} code status code
      * @param {string} msg error message
      */
-    constructor (code, msg) {
+    constructor(code, msg) {
         this.code = code
         this.message = msg
     }
@@ -22,5 +22,14 @@ module.exports = class ApiError {
     }
     static get notfound() {
         return new ApiError(404, 'Not found')
+    }
+    static get error() {
+        return new ApiError(503, 'Internal server error')
+    }
+    other() {
+        return {
+            code: this.code,
+            message: this.message
+        }
     }
 }

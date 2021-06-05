@@ -20,6 +20,12 @@
   },
   "homepage": "https://github.com/speak-dev/xelies-server#readme",
   "dependencies": {
-    "nanoexpress": "^5.0.5"
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "nanoexpress": "^5.0.5",
+    "uws": "^200.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
