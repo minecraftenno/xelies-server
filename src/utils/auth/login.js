@@ -21,11 +21,15 @@ module.exports = (app) => {
         if (crypt.decrypt({
           iv: a.email.iv,
           content: a.email.content
-        }, key) === email) return {
-          iv: a.email.iv,
-          content: a.email.content
-        }
+        }, key) === email) {
+          return {
+            status: true,
+            iv: a.email.iv,
+            content: a.email.content
+          }
+        } else return { status: false }
       })
+      if(checkemail.status == false) return res.status(403).json(ApiResponse(403, "Invalid email"))
       console.log(checkemail)
       user.findOne({
         'email.iv': checkemail.iv
