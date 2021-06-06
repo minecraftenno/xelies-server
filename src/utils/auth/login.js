@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken'),
 ApiResponse = require('../../helpers/ApiResponse'),
 user = require('../../models/user.model'),
 crypt = require('../../crypto/crypto'),
-bcrypt = require('bcrypt');
+bcrypt = require('bcrypt'),
+key = process.env.SECRET || require('../../../c.json').SECRET
 
 module.exports = (app) => {
   app.post('/login', (req, res) => {
