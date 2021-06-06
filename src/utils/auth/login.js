@@ -12,7 +12,7 @@ module.exports = (app) => {
       password
     } = req.body
 
-    if (!email) return res.status(503).json(ApiResponse.badrequest)
+    if (!email || !password) return res.status(503).json(ApiResponse.badrequest)
     if (!email.includes('@')) return res.status(503).json(ApiResponse.badrequest)
     user.find({}, (err, doc) => {
       if (err) return res.status(503).json(ApiResponse.error)
@@ -31,7 +31,7 @@ module.exports = (app) => {
           $in: checkemail.iv
         }
       }).exec((e, d) => {
-        if (e) return res.status(503).json(ApiResponse.error)
+        if (e) return res.status(503).json(ApiResponse(503, e))
         if(!d) return res.status(403).json(ApiResponse(403, "Invalid email"))
         bcrypt.compare(password, d.password, (err, result) => {
           if (result) {
