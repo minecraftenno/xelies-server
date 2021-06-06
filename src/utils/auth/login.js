@@ -27,7 +27,7 @@ module.exports = (app) => {
         }
       })
       user.findOne({
-        'eimal.iv': {
+        'email.iv': {
           $in: checkemail.iv
         }
       }).exec((e, d) => {
