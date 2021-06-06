@@ -26,10 +26,9 @@ module.exports = (app) => {
           content: a.email.content
         }
       })
+      console.log(checkemail)
       user.findOne({
-        'email.iv': {
-          $in: checkemail.iv
-        }
+        'email.iv': checkemail.iv
       }).exec((e, d) => {
         if (e) return res.status(503).json(ApiResponse.error), console.error(e)
         if(!d) return res.status(403).json(ApiResponse(403, "Invalid email"))
