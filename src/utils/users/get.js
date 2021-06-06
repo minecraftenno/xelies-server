@@ -40,7 +40,7 @@ module.exports = (app) => {
                             status: doc.status
                         });
                     } else {
-                        return res.status(503).send(ApiResponse.error); //si ce code est exec mon middleware pue la queue sltcv
+                        return res.status(401).send(ApiResponse.unauthorized); //Si ce code est utilisé, c'est que le token de l'utilisateur est déclalé de quelques chiffres / que le checkauth ne donne rien comme err
                     }
                 });
             } else {
