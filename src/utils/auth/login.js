@@ -31,7 +31,7 @@ module.exports = (app) => {
           $in: checkemail.iv
         }
       }).exec((e, d) => {
-        if (e) return res.status(503).json(ApiResponse(503, e))
+        if (e) return res.status(503).json(ApiResponse.error), console.error(e)
         if(!d) return res.status(403).json(ApiResponse(403, "Invalid email"))
         bcrypt.compare(password, d.password, (err, result) => {
           if (result) {
