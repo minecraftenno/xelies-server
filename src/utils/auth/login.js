@@ -29,12 +29,14 @@ module.exports = (app) => {
           }
         } else return { status: false }
       })
+      console.log(checkemail)
       if(checkemail.status == false) return res.status(403).json(ApiResponse(403, "Invalid email"))
 
       user.findOne({
         'email.iv': checkemail.iv
       }).exec((e, d) => {
         if (e) return res.status(503).json(ApiResponse.error), console.error(e)
+        console.log(d)
         if(!d) return res.status(403).json(new ApiResponse(403, "Invalid email"))
         
         bcrypt.compare(password, d.password, (err, result) => {
