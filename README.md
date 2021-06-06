@@ -1,7 +1,7 @@
 # Xelies
 Xelies is an open-source chat. All messages and tokens are hashed using a strong encryption algorithm (`aes-256`), which guarantees your anonymity.
 
-# Server-Side
+# Server-Sidex
 
 ## To Do
 
