@@ -30,23 +30,27 @@ module.exports = (app) => {
         } else return { status: false }
       })
       if(checkemail.status == false) return res.status(403).json(ApiResponse(403, "Invalid email"))
-      console.log(checkemail)
+
       user.findOne({
         'email.iv': checkemail.iv
       }).exec((e, d) => {
         if (e) return res.status(503).json(ApiResponse.error), console.error(e)
-        if(!d) return res.status(403).json(ApiResponse(403, "Invalid email"))
+        if(!d) return res.status(403).json(new ApiResponse(403, "Invalid email"))
+        
         bcrypt.compare(password, d.password, (err, result) => {
           if (result) {
+
             let token = jwt.sign({
               ID: doc._id
             }, doc.password, {
               expiresIn: '24h'
-            });
+            })
+
             res.status(203).json({
               token: token
-            });
-          } else return res.status(403).json(ApiResponse(403, "Invalid password."))
+            })
+
+          } else return res.status(403).json(new ApiResponse(403, "Invalid password."))
         })
       })
     })
