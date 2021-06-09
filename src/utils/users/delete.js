@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken'),
     CheckAuth = require("../../middlewares/jwt"),
     {decrypt} = require("../../crypto/crypto");
 
-module.exports = (app) => {
+module.exports = app => {
     app.delete("/users/:user", Authorized, (req, res) => {
     
         if(req.password) {

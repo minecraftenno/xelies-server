@@ -29,14 +29,5 @@ module.exports = class ApiError {
     static get error() {
         return new ApiError(500, 'Internal server error')
     }
-
-    //2xx
-    
-    static get nocontent() {
-        return new ApiError(203, 'No Content')
-    }
-    static get accepted() {
-        return new ApiError(202, 'Accepted')
-    }
     
 }

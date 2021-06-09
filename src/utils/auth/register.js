@@ -3,17 +3,27 @@ const jwt = require('jsonwebtoken'),
     user = require('../../models/user.model'),
     crypt = require('../../crypto/crypto'),
     bcrypt = require('bcrypt'),
-    key = process.env.SECRET || require('../../../c.json').SECRET;
+    SECRET = process.env.SECRET || require('../../../c.json').SECRET,
+    mail = require('mailgun-js')
 
-module.exports = (app) => {
+module.exports = app => {
 
-    app.post('/register', (req, res, next) => {
+    app.post('/register', (req, res) => {
         if (!req.body) return res.status(400).json(ApiError.badrequest)
-        const {
+        var {
             username,
             email,
             password
-        } = req.body
+        } = req.body,
+
+            gen = function (l) {
+                var r = '';
+                var b = '123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN'
+                for (var i = 0; i < l; i++) {
+                    r += b.charAt(Math.floor(Math.random() * b.length))
+                }
+                return r;
+            }
 
         //check
         if (!username) {
@@ -26,7 +36,7 @@ module.exports = (app) => {
             return res.status(400).json(new ApiError(400, 'The password given is too short.'))
         }
 
-        var h = crypt.encrypt(email, key)
+        var h = crypt.encrypt(email, SECRET)
 
         //findAll
         user.find({}).exec((err, doc) => {
@@ -34,10 +44,10 @@ module.exports = (app) => {
 
             const checkemail = doc.find(a => {
                 if (crypt.decrypt({
-                  iv: a.email.iv,
-                  content: a.email.content
-              }, key) === email) return true
-              
+                        iv: a.email.iv,
+                        content: a.email.content
+                    }, SECRET) === email) return true
+
             })
             if (checkemail) return res.status(503).json({
                 code: 503,
@@ -51,22 +61,34 @@ module.exports = (app) => {
 
                     new user({
                         _id: user_id,
+                        tag: gen(5),
                         username: username,
                         email: {
                             iv: h.iv,
                             content: h.content
                         },
                         password: p
-                    }).save((e, r) => {
-                        if (e) return res.status(503)
-                   //     console.log(r)
+                    }).save(e => {if(e) return res.status(500).json(ApiError.error)})
+
+                    mail({
+                        apiKey: process.env.MAILGUN|| require('../../../c.json').MAILGUN,
+                        domain: process.env.STMP_DOMAINE|| require('../../../c.json').STMP_DOMAINE
+                    }).messages().send({
+                        from: "xelies.com",
+                        to: "punchnoxv1@gmail.com",
+                        subject: `hey ${username}`,
+                        html: `<h2>hey ${username}</h2><p>welcome to xelies</p>`,
+                    }, function (e, r) {
+                        if (e) return console.error(e);
+                        console.log(r)
                     })
                     let token = jwt.sign({
                         ID: user_id
                     }, p, {
                         expiresIn: '24h'
                     })
-                    res.status(203).json({
+
+                    res.status(200).json({
                         token: token
                     })
                 })

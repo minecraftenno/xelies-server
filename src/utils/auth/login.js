@@ -5,7 +5,7 @@ crypt = require('../../crypto/crypto'),
 bcrypt = require('bcrypt'),
 key = process.env.SECRET || require('../../../c.json').SECRET
 
-module.exports = (app) => {
+module.exports = app => {
   app.get('/login', (req, res) => {
     if(!JSON.stringify(req.body)) return res.status(405).json(ApiError.badrequest)
     const { email, password } = req.body
@@ -20,7 +20,6 @@ module.exports = (app) => {
       if (err) return res.status(503).json(ApiError.error)
 
       const checkemail = doc.find(a => {
-        console.log(email, crypt.decrypt({iv: a.email.iv,content: a.email.content}, key))
         if (crypt.decrypt({iv: a.email.iv,content: a.email.content}, key) === email) return {
             status: true,
             iv: a.email.iv,
@@ -33,11 +32,10 @@ module.exports = (app) => {
         "email.iv": checkemail.email.iv
       }).exec((e, d) => {
         if (e) return res.status(503).json(ApiError.error)
-        console.log("doc: ", d)
         if(!d) return res.status(500).json(ApiError.error)
         
         bcrypt.compare(password, d.password, (e, r) => {
-          if(e) return res.status(500).json(ApiError.error), console.log(e)
+          if(e) return res.status(500).json(ApiError.error)
           if (r) {
             let token = jwt.sign({
               ID: d._id

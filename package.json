@@ -6,6 +6,7 @@
   "directories": {
     "test": "test"
   },
+  "type": "commonjs",
   "scripts": {
     "nodemon": "nodemon .",
     "start": "node .",
@@ -27,8 +28,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
-    "nanoexpress": "^5.0.5",
-    "uws": "^200.0.0"
+    "mailgun-js": "0.22.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
