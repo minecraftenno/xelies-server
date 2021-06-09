@@ -6,7 +6,7 @@ bcrypt = require('bcrypt'),
 key = process.env.SECRET || require('../../../c.json').SECRET
 
 module.exports = app => {
-  app.get('/login', (req, res) => {
+  app.post('/login', (req, res) => {
     if(!JSON.stringify(req.body)) return res.status(405).json(ApiError.badrequest)
     const { email, password } = req.body
 
