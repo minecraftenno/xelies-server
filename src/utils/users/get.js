@@ -1,34 +1,34 @@
-const ApiError = require('../../helpers/ApiError'),
-    userm = require('../../models/user.model'),
+const jwt = require('jsonwebtoken'),
+ApiError = require('../../helpers/ApiError'),
+    userm = require('../../models/user.model');
     Authorized = require("../../middlewares/authorization"),
     CheckAuth = require("../../middlewares/jwt"),
-    { decrypt } = require("../../crypto/crypto")
+    {decrypt} = require("../../crypto/crypto");
 
-module.exports = app => {
+module.exports = (app) => {
     app.get("/users/:user", Authorized, (req, res) => {
-
-        if (req.password) {
+    
+        if(req.password) {
             try {
+                
+
                 CheckAuth(req.headers.authorization, req.password)
-            } catch (e) {
-                console.log(e)
+            } catch(e) {
                 return res.status(401).send(ApiError.unauthorized);
             }
             let decoded = CheckAuth(req.headers.authorization, req.password)
-
-            if (decoded == ApiError.error) return res.status(503).send(decoded);
-
+         
+            if(decoded == ApiError.error) return res.status(503).send(decoded);
+            
             decoded = JSON.parse(JSON.stringify(decoded));
 
             //CODE
-            const {
-                user
-            } = req.params;
-            if (user == "@me") {
+            const {user} = req.params;
+            if(user == "@me") {
                 userm.findById(decoded.ID, (err, doc) => {
-                    if (err) return res.status(503).send(ApiError.error);
-                    if (doc) {
-                        const email = decrypt(doc.email.content, doc.email.iv)
+                    if(err) return res.status(503).send(ApiError.error);
+                    if(doc) {
+                        const email = decrypt({content: doc.email.content, iv: doc.email.iv}, "47855478745874444785547874587444")
                         return res.status(200).json({
                             id: doc._id,
                             email: email,
@@ -44,7 +44,7 @@ module.exports = app => {
                 });
             } else {
                 userm.findById(user, (err, doc) => {
-                    if (err) return res.status(503).send(ApiError.error);
+                    if(err) return res.status(503).send(ApiError.error);
                     return res.status(200).json({
                         id: doc._id,
                         username: doc.username,

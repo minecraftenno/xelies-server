@@ -1,5 +1,6 @@
 const crypto = require('crypto'),
 algorithm = 'aes-256-ctr',
+key = "47855478745874444785547874587444",
 iv = crypto.randomBytes(16)
 const encrypt = (text, key) => {
 
