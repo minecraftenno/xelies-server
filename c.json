@@ -1,0 +1,4 @@
+{
+    "MONGO": "mongodb+srv://[USERNAME]:[PASSWORD]@cluster0.4zaie.mongodb.net/chat?authSource=admin&replicaSet=atlas-o8947l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true",
+    "SECRET": "[SECRET ENCRYPTION KEY]"
+}
