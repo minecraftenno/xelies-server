@@ -1,4 +1,0 @@
-{
-    "MONGO": "mongodb+srv://ramokadmin:1BZSI2ar8bBl35GM@cluster0.4zaie.mongodb.net/chat?authSource=admin&replicaSet=atlas-o8947l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true",
-    "SECRET": "47855478745874444785547874587444"
-}
