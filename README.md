@@ -12,7 +12,7 @@ Xelies is an open-source chat. All messages and tokens are hashed using a strong
 - [X] Passwords Encrypting
 - [ ] Set Current Bio
 - [ ] Join Guild
-- [ ] Create Guild
+- [X] Create Guild
 - [ ] Create Guild Invite
 - [ ] Send DM 
 - [ ] Create Channel
@@ -23,3 +23,5 @@ Xelies is an open-source chat. All messages and tokens are hashed using a strong
 - [ ] Accept Friend Request
 - [ ] Status
 - [ ] Set Current Avatar
+
+
