@@ -8,6 +8,9 @@ module.exports = class ApiError {
         this.code = code
         this.message = msg
     }
+
+    //4xx
+
     static get badrequest() {
         return new ApiError(400, 'Bad request')
     }
@@ -17,25 +20,18 @@ module.exports = class ApiError {
     static get forbidden() {
         return new ApiError(403, 'Forbidden')
     }
-    static get nocontent() {
-        return new ApiError(203, 'No Content')
+    static get notfound() {
+        return new ApiError(404, 'Not found')
     }
     static get methodnotallowed() {
         return new ApiError(405, 'Method Not Allowed')
     }
-    static get accepted() {
-        return new ApiError(202, 'Accepted')
-    }
-    static get notfound() {
-        return new ApiError(404, 'Not found')
-    }
+
+
+    //5xx
+
     static get error() {
-        return new ApiError(503, 'Internal server error')
+        return new ApiError(500, 'Internal server error')
     }
-    other() {
-        return {
-            code: this.code,
-            message: this.message
-        }
-    }
+
 }
