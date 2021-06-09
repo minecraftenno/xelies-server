@@ -86,7 +86,7 @@ out
 .nuxt
 dist
 
-.c.json
+*.json
 
 # Gatsby files
 .cache/
