@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken'),
-ApiResponse = require('../../helpers/ApiResponse'),
+ApiError = require('../../helpers/ApiError'),
     userm = require('../../models/user.model');
     Authorized = require("../../middlewares/authorization"),
     CheckAuth = require("../../middlewares/jwt"),
@@ -14,12 +14,11 @@ module.exports = (app) => {
 
                 CheckAuth(req.headers.authorization, req.password)
             } catch(e) {
-                console.log(e)
-                return res.status(401).send(ApiResponse.unauthorized);
+                return res.status(401).send(ApiError.unauthorized);
             }
             let decoded = CheckAuth(req.headers.authorization, req.password)
          
-            if(decoded == ApiResponse.error) return res.status(503).send(decoded);
+            if(decoded == ApiError.error) return res.status(503).send(decoded);
             
             decoded = JSON.parse(JSON.stringify(decoded));
 
@@ -27,9 +26,9 @@ module.exports = (app) => {
             const {user} = req.params;
             if(user == "@me") {
                 userm.findById(decoded.ID, (err, doc) => {
-                    if(err) return res.status(503).send(ApiResponse.error);
+                    if(err) return res.status(503).send(ApiError.error);
                     if(doc) {
-                        const email = decrypt(doc.email.content, doc.email.iv)
+                        const email = decrypt({content: doc.email.content, iv: doc.email.iv}, "47855478745874444785547874587444")
                         return res.status(200).json({
                             id: doc._id,
                             email: email,
@@ -40,12 +39,12 @@ module.exports = (app) => {
                             status: doc.status
                         });
                     } else {
-                        return res.status(401).send(ApiResponse.unauthorized); //Si ce code est utilisé, c'est que le token de l'utilisateur est déclalé de quelques chiffres / que le checkauth ne donne rien comme err
+                        return res.status(401).send(ApiError.unauthorized); //Si ce code est utilisé, c'est que le token de l'utilisateur est déclalé de quelques chiffres / que le checkauth ne donne rien comme err
                     }
                 });
             } else {
                 userm.findById(user, (err, doc) => {
-                    if(err) return res.status(503).send(ApiResponse.error);
+                    if(err) return res.status(503).send(ApiError.error);
                     return res.status(200).json({
                         id: doc._id,
                         username: doc.username,

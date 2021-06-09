@@ -6,6 +6,7 @@ u = new mongoose.Schema({
     username: String,
     tag: String,
     password: String,
+    guilds: Array,
     avatar: String,
     friends: Array,
     notifications: Array,

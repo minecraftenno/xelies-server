@@ -1,6 +1,6 @@
-module.exports = class ApiResponse {
+module.exports = class ApiError {
     /**
-     * @constructs ApiResponse
+     * @constructs ApiError
      * @param {number} code status code
      * @param {string} msg error message
      */
@@ -9,28 +9,28 @@ module.exports = class ApiResponse {
         this.message = msg
     }
     static get badrequest() {
-        return new ApiResponse(400, 'Bad request')
+        return new ApiError(400, 'Bad request')
     }
     static get unauthorized() {
-        return new ApiResponse(401, 'Unauthorized')
+        return new ApiError(401, 'Unauthorized')
     }
     static get forbidden() {
-        return new ApiResponse(403, 'Forbidden')
+        return new ApiError(403, 'Forbidden')
     }
     static get nocontent() {
-        return new ApiResponse(203, 'No Content')
+        return new ApiError(203, 'No Content')
     }
     static get methodnotallowed() {
-        return new ApiResponse(405, 'Method Not Allowed')
+        return new ApiError(405, 'Method Not Allowed')
     }
     static get accepted() {
-        return new ApiResponse(202, 'Accepted')
+        return new ApiError(202, 'Accepted')
     }
     static get notfound() {
-        return new ApiResponse(404, 'Not found')
+        return new ApiError(404, 'Not found')
     }
     static get error() {
-        return new ApiResponse(503, 'Internal server error')
+        return new ApiError(503, 'Internal server error')
     }
     other() {
         return {

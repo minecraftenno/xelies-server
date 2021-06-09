@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken'),
-    ApiResponse = require('../../helpers/ApiResponse'),
+    ApiError = require('../../helpers/ApiError'),
     user = require('../../models/user.model'),
     crypt = require('../../crypto/crypto'),
     bcrypt = require('bcrypt'),
@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken'),
 module.exports = (app) => {
 
     app.post('/register', (req, res, next) => {
-        if (!req.body) return res.status(400).json(ApiResponse.badrequest)
+        if (!req.body) return res.status(400).json(ApiError.badrequest)
         const {
             username,
             email,
@@ -17,13 +17,13 @@ module.exports = (app) => {
 
         //check
         if (!username) {
-            return res.status(400).json(new ApiResponse(400, 'No username field found.'))
+            return res.status(400).json(new ApiError(400, 'No username field found.'))
         } else if (!email) {
-            return res.status(400).json(new ApiResponse(400, 'No email field found.'))
+            return res.status(400).json(new ApiError(400, 'No email field found.'))
         } else if (!password) {
-            return res.status(400).json(new ApiResponse(400, 'No password field found.'))
+            return res.status(400).json(new ApiError(400, 'No password field found.'))
         } else if (password.length < 6) {
-            return res.status(400).json(new ApiResponse(400, 'The password given is too short.'))
+            return res.status(400).json(new ApiError(400, 'The password given is too short.'))
         }
 
         var h = crypt.encrypt(email, key)

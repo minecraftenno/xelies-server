@@ -1,4 +1,4 @@
-const ApiResponse = require('../helpers/ApiResponse'),
+const ApiError = require('../helpers/ApiError'),
     jwt = require('jsonwebtoken')
 
 module.exports = function (auth, secret) {
@@ -6,7 +6,7 @@ module.exports = function (auth, secret) {
     try {
         return jwt.verify(auth, secret)
     } catch(e) {
-        return ApiResponse.error;
+        return ApiError.error;
     }
 
 }

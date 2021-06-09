@@ -1,21 +1,21 @@
 const jwt = require('jsonwebtoken'),
-ApiResponse = require('../../helpers/ApiResponse'),
-user = require('../../models/user.model'),
+ApiError = require('../../helpers/ApiError'),
+user = require('../../models/guild.model'),
 crypt = require('../../crypto/crypto'),
 bcrypt = require('bcrypt'),
-key = process.env.SECRET || require('../../../c.json').SECRET
+key = process.env.SECRET || require('../../../c.json').SECRET;
 
 module.exports = (app) => {
   app.post('/login', (req, res) => {
     const {
       email,
       password
-    } = req.body
+    } = req.body;
 
-    if (!email || !password) return res.status(503).json(ApiResponse.badrequest)
-    if (!email.includes('@')) return res.status(503).json(ApiResponse.badrequest)
+    if (!email || !password) return res.status(400).json(ApiError.badrequest);
+    if (!email.includes('@')) return res.status(400).json(ApiError.badrequest);
     user.find({}, (err, doc) => {
-      if (err) return res.status(503).json(ApiResponse.error)
+      if (err) return res.status(503).json(ApiError.error)
 
       const checkemail = doc.find(a => {
         if (crypt.decrypt({
@@ -26,33 +26,36 @@ module.exports = (app) => {
             iv: a.email.iv,
             content: a.email.content
           }
-      })
-      console.log("email: ", checkemail)
-      if(!checkemail) return res.status(403).json(ApiResponse(403, "Invalid email"))
+      });
+      if(!checkemail) {
+        return res.status(403).json(new ApiError(403, "Invalid email"));
+      } else {
+        console.log(checkmail)
+      }
 
       user.findOne({
         "email.iv": checkemail.iv
       }).exec((e, d) => {
-        if (e) return res.status(503).json(ApiResponse.error), console.error(e)
+        if (e) return res.status(503).json(ApiError.error), console.error(e)
         console.log("doc: ", d)
-        if(!d) return res.status(403).json(new ApiResponse(403, "Invalid email"))
+        if(!d) return res.status(403).json(new ApiError(403, "Invalid email"));
         
         bcrypt.compare(password, d.password, (err, result) => {
-          if (result) {
+          if (result == true) {
 
             let token = jwt.sign({
               ID: doc._id
             }, doc.password, {
               expiresIn: '24h'
-            })
+            });
 
             res.status(203).json({
               token: token
-            })
+            });
 
-          } else return res.status(403).json(new ApiResponse(403, "Invalid password."))
-        })
-      })
-    })
+          } else return res.status(403).json(new ApiError(403, "Invalid password."))
+        });
+      });
+    });
   })
 }

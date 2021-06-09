@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken'),
-    ApiResponse = require('../../helpers/ApiResponse'),
+    ApiError = require('../../helpers/ApiError'),
     userm = require('../../models/user.model');
     Authorized = require("../../middlewares/authorization"),
     CheckAuth = require("../../middlewares/jwt"),
@@ -13,11 +13,11 @@ module.exports = (app) => {
                 CheckAuth(req.headers.authorization, req.password)
             } catch(e) {
                 console.log(e)
-                return res.status(401).send(ApiResponse.unauthorized);
+                return res.status(401).send(ApiError.unauthorized);
             }
             let decoded = CheckAuth(req.headers.authorization, req.password)
          
-            if(decoded == ApiResponse.error) return res.status(503).send(decoded);
+            if(decoded == ApiError.error) return res.status(503).send(decoded);
             
             decoded = JSON.parse(JSON.stringify(decoded));
 
@@ -25,7 +25,7 @@ module.exports = (app) => {
             const {user} = req.params;
             if(user == "@me") {
                 userm.findById(decoded.ID, (err, doc) => {
-                    if(err) return res.status(503).send(ApiResponse.error);
+                    if(err) return res.status(503).send(ApiError.error);
                     if(doc) {
                         const newuser = {
                             id: doc._id,
@@ -40,16 +40,16 @@ module.exports = (app) => {
                         }
 
                         userm.findByIdAndUpdate(decoded.ID, newuser, (err, doc) => {
-                            if(!err) {res.status(202).send(ApiResponse.accepted) } else{res.status(503).send(ApiResponse.error)}
+                            if(!err) {res.status(202).send(ApiError.accepted) } else{res.status(503).send(ApiError.error)}
                             
                         });
                         return res.status(200).json();
                     } else {
-                        return res.status(503).send(ApiResponse.error); //si ce code est exec mon middleware pue la queue sltcv
+                        return res.status(503).send(ApiError.error); //si ce code est exec mon middleware pue la queue sltcv
                     }
                 });
             } else {
-                return res.status(405).send(ApiResponse.methodnotallowed);
+                return res.status(405).send(ApiError.methodnotallowed);
             }
         }
     });
