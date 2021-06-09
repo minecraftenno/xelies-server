@@ -75,7 +75,7 @@ module.exports = app => {
                         domain: process.env.STMP_DOMAINE|| require('../../../c.json').STMP_DOMAINE
                     }).messages().send({
                         from: "xelies.com",
-                        to: "punchnoxv1@gmail.com",
+                        to: email,
                         subject: `hey ${username}`,
                         html: `<h2>hey ${username}</h2><p>welcome to xelies</p>`,
                     }, function (e, r) {
