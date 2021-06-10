@@ -6,7 +6,7 @@ module.exports = function (auth, secret) {
     try {
         return jwt.verify(auth, secret)
     } catch(e) {
-        return ApiError.error;
+        return ApiError.error
     }
 
 }

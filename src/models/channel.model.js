@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 u = new mongoose.Schema({
     _id: Number, 

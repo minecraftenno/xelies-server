@@ -1,9 +1,9 @@
-const ApiError = require("../../helpers/ApiError");
+const ApiError = require("../../helpers/ApiError")
 const Authorized = require("../../middlewares/authorization"),
 CheckAuth = require("../../middlewares/jwt"),
 guildSchema = require("../../models/guild.model"),
 userSchema = require("../../models/user.model"),
-channelSchema = require("../../models/channel.model");
+channelSchema = require("../../models/channel.model")
 
 module.exports = (app) => {
     app.post("/guild/create", Authorized, (req, res) => {
@@ -11,18 +11,18 @@ module.exports = (app) => {
             try {
                 CheckAuth(req.headers.authorization, req.password)
             } catch(e) {
-                return res.status(401).send(ApiError.unauthorized);
+                return res.status(401).send(ApiError.unauthorized)
             }
             let decoded = CheckAuth(req.headers.authorization, req.password)
          
-            if(decoded == ApiError.error) return res.status(401).send(decoded);
-            decoded = JSON.parse(JSON.stringify(decoded));
+            if(decoded == ApiError.error) return res.status(401).send(decoded)
+            decoded = JSON.parse(JSON.stringify(decoded))
             
             //CODE
             userSchema.findById(decoded.ID, (err, data) => {
                 if(err) {
-                    res.send(503).send(ApiError.error);
-                    throw err;
+                    res.send(503).send(ApiError.error)
+                    throw err
                 }else {
 
                     if(data) {
@@ -30,7 +30,7 @@ module.exports = (app) => {
                   
                             if(err2) {
                      
-                                res.send(503).send(ApiError.error);
+                                res.send(503).send(ApiError.error)
                             } else {
 
                                 channelSchema.countDocuments((err3, id) => {
@@ -47,7 +47,7 @@ module.exports = (app) => {
                                     }
 
                                      new channelSchema(channel).save((err4, doc) => {
-                                         if(err4) return res.send(ApiError.error).status(500);
+                                         if(err4) return res.send(ApiError.error).status(500)
                                         const guild = {
                                             _id: count + 1,
                                             name: "Server of " + data.username,
@@ -70,26 +70,26 @@ module.exports = (app) => {
                                                     if(err) {
                                                         return res.status(500).send(ApiError.error)
                                                     } else {
-                                                        return res.status(200).send(r);
+                                                        return res.status(200).send(r)
                                                     }
-                                                });
+                                                })
                                               // 
                                             }
-                                        });
-                                     });
+                                        })
+                                     })
 
-                                });
+                                })
 
                                 
                             }                            
-                        });
+                        })
                     } else {
-                        res.send(401).send(ApiError.unauthorized);
+                        res.send(401).send(ApiError.unauthorized)
                     }
                 }
-            });
+            })
         } else {
-            return res.status(401).send(ApiError.unauthorized);
+            return res.status(401).send(ApiError.unauthorized)
         }
-    });
+    })
 }

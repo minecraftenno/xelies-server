@@ -17,12 +17,12 @@ module.exports = app => {
         } = req.body,
 
             gen = function (l) {
-                var r = '';
+                var r = ''
                 var b = '123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN'
                 for (var i = 0; i < l; i++) {
                     r += b.charAt(Math.floor(Math.random() * b.length))
                 }
-                return r;
+                return r
             }
 
         //check
@@ -43,6 +43,7 @@ module.exports = app => {
             if (err) throw err
 
             const checkemail = doc.find(a => {
+                if(a.email == null) return;
                 if (crypt.decrypt({
                         iv: a.email.iv,
                         content: a.email.content
@@ -67,6 +68,8 @@ module.exports = app => {
                             iv: h.iv,
                             content: h.content
                         },
+                        avatar: null,
+                        bot: false,
                         password: p
                     }).save(e => {if(e) return res.status(500).json(ApiError.error)})
 
@@ -79,7 +82,7 @@ module.exports = app => {
                         subject: `hey ${username}`,
                         html: `<h2>hey ${username}</h2><p>welcome to xelies</p>`,
                     }, function (e, r) {
-                        if (e) return console.error(e);
+                        if (e) return console.error(e)
                         console.log(r)
                     })
                     let token = jwt.sign({

@@ -1,4 +1,6 @@
 {
-    "MONGO": "mongodb+srv://[USERNAME]:[PASSWORD]@cluster0.4zaie.mongodb.net/chat?authSource=admin&replicaSet=atlas-o8947l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true",
-    "SECRET": "[SECRET ENCRYPTION KEY]"
+    "MONGO": "mongodb+srv://all:4DnKXI7FWJ5ERouB@xelies.dz3za.mongodb.net/test",
+    "SECRET": "vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3",
+    "MAILGUN": "63d3c23b16faae9e6d15761c3edd64c0-90ac0eb7-d34bb938",
+    "STMP_DOMAINE": "andbox0367ebc752a0460d837c01d5cc7499c7.mailgun.org"
 }
