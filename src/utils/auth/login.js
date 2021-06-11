@@ -20,6 +20,7 @@ module.exports = app => {
       if (err) return res.status(503).json(ApiError.error)
 
       const checkemail = doc.find(a => {
+        if(!a.email) return
         if (crypt.decrypt({iv: a.email.iv,content: a.email.content}, key) === email) return {
             status: true,
             iv: a.email.iv,

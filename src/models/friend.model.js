@@ -9,10 +9,6 @@ const mongoose = require('mongoose'),
             type: Number,
             required: true
         },
-        status: {
-            type: Number,
-            required: true
-        },
         CreatedAt: {
             default: Date.now(),
             type: Date
