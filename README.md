@@ -20,7 +20,9 @@ Xelies is an open-source chat. All messages and tokens are hashed using a strong
 - [ ] Edit Channel
 - [ ] Channel Password Protected
 - [X] Send Friend Request
-- [ ] Accept Friend Request
+- [X] Accept Friend Request
+- [X] Deny Friend Request
+- [X] Get Friends Requests
 - [ ] Status
 - [ ] Set Current Avatar
 
