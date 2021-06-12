@@ -40,6 +40,7 @@ module.exports = (app) => {
                         email: email,
                         friends: doc.friends,
                         notifications: doc.notifications,
+                        guilds: doc.guilds,
                         CreatedAd: doc.CreatedAt
                     }
                 })

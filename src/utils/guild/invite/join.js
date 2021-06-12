@@ -65,7 +65,7 @@ module.exports = (app) => {
             }
         }, (e, d) => {
             if (e) return res.status(500).json(ApiError.error)
-            if (!d) return res.Status(404).json(ApiError.notfound)
+            if (!d) return res.status(404).json(ApiError.notfound)
         })
 
         return res.status(204).json()

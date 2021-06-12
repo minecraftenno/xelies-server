@@ -47,7 +47,7 @@ module.exports = (app) => {
                 a.push(String(c))
             })
         })
-console.log(a)
+
         if (!a.includes('ADMINISTRATOR') && !a.includes('MANAGE_INVITE')) return res.status(401).json(ApiError.unauthorized)
 
         i.remove()
