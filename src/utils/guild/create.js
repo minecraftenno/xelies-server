@@ -34,7 +34,7 @@ module.exports = (app) => {
                 rate_limit_per_user: 0,
                 author: decoded.ID,
                 type: 0,
-                permissions: ['SEND_MESSAGE'],
+                permissions: ['SEND_MESSAGE', 'CREATE_INVITE'],
                 position: 0
             }),
 
@@ -42,7 +42,17 @@ module.exports = (app) => {
                 _id: uuid.gen(),
                 name: 'everyone',
                 guild: guild_id,
-                permissions: ['SEND_MESSAGE'],
+                permissions: ['SEND_MESSAGE', 'CREATE_INVITE'],
+                color: null,
+                default: true,
+                deletable: false,
+                CreatedAt: Date.now()
+            }),
+            owner = await roles.create({
+                _id: uuid.gen(),
+                name: 'owner',
+                guild: guild_id,
+                permissions: ['ADMINISTRATOR'],
                 color: null,
                 default: true,
                 deletable: false,
@@ -52,8 +62,12 @@ module.exports = (app) => {
             guild = await guilds.create({
                 _id: guild_id,
                 name: name || "Server of " + d.username,
-                owner_id: decoded.ID,
-                owner_name: d.username,
+                description: "Server of " + d.username,
+                owner: {
+                    id: decoded.ID,
+                    name: d.username
+                },
+                icon: null,
                 members: [{
                     user: {
                         id: decoded.ID,
@@ -61,7 +75,7 @@ module.exports = (app) => {
                         tag: d.tag,
                         avatar: d.avatar
                     },
-                    roles: [everyone._id],
+                    roles: [everyone._id, owner._id],
                     nickname: null,
                     createdAt: d.CreatedAt,
                     joinedAt: Date.now(),

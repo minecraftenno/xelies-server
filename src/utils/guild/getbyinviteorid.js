@@ -6,7 +6,7 @@ userSchema = require("../../models/user.model"),
 channelSchema = require("../../models/channel.model")
 
 module.exports = (app) => {
-    app.get("/guild/info/:code", Authorized, (req, res) => {
+    app.get("/invite/:code", Authorized, (req, res) => {
         if(req.password) {
             try {
                 CheckAuth(req.headers.authorization, req.password)

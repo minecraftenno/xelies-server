@@ -10,13 +10,13 @@ u = new mongoose.Schema({
         type: Number,
         required: true
     },
+    guild_name: {
+        type: String,
+        required: true
+    },
     rate_limit_per_user: {
         type: Number,
         default: 0,
-        required: true
-    },
-    guild_name: {
-        type: String,
         required: true
     },
     author: Number,

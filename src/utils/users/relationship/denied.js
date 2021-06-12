@@ -16,7 +16,7 @@ module.exports = app => {
         let decoded = require('../../../middlewares/jwt')(authorization, req.password)
 
         if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
-        if (isNaN(to)) return res.status(403).json(new ApiError(403, 'the value is not int'))
+        if (isNaN(to)) return res.status(400).json(new ApiError(400, 'the value is not int'))
         if (decoded.ID === Number(to)) return res.status(403).json(new ApiError(403, 'are you serious ?'))
 
         user.findById(to, async (e, d) => {
