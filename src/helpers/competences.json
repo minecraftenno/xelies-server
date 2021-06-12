@@ -1,0 +1,50 @@
+{
+    "0": {
+        "label": "Beta testeur",
+        "image": "beta.png",
+        "description": "Merci de nous avoir permis de déployer notre application au grand public ! Sans vous, Xelies n'aurait pas été Xelies !",
+        "indicator": "Pour débloquer ce badge, il faut avoir été beta testeur pour Xelies"
+    },
+    "1": {
+        "label": "Petit ancien",
+        "image": "littleancien.png",
+        "description": "Déjà 1 mois ! On vois vraiment pas le temps passer chez Xelies..",
+        "indicator": "Pour avoir ce badge, il faut que votre compte ait une ancienneté de plus de 1 mois"
+    },
+    "2": {
+        "label": "Ancien",
+        "image": "ancien.png",
+        "description": "L'époque de nos grand frères ! Cela fait maintenant 1 an que tu es sur Xelies",
+        "indicator": "Pour avoir ce badge, il faut que votre compte ait une ancienneté de plus de 1an !"
+    },
+    "3": {
+        "label": "Face d'or",
+        "image": "gold.png",
+        "description": "Quel face! (🤪🤪)",
+        "indicator": "Pour avoir ce badge, il faut tomber 10x sur face au pile ou face contre vos amis!"
+    },
+    "4": {
+        "label": "Développeur",
+        "image": "dev.png",
+        "description": "Ton bot doit vraiment être utile, maintenant, tu es un développeur vérifié ✔✔",
+        "indicator": "Pour avoir ce badge, il faut que vous fassiez un bot sur plus de 100 serveurs"
+    },
+    "5": {
+        "label": "Créateur",
+        "image": "createur.png",
+        "description": "Ton serveur est maintenant un empire !",
+        "indicator": "Pour avoir ce badge, il faut que vous ayez un serveur avec plus de 1000 membres"
+    },
+    "6": {
+        "label": "Partenaire",
+        "image": "partenaire.png",
+        "description": "C'est toujours un plaisir que de travailler avec nos partenaires !",
+        "indicator": "Pour avoir ce badge, il faut être partenaire avec nous"
+    },
+    "7": {
+        "label": "Collant",
+        "image": "sticky.png",
+        "description": "Tu as débloqué tout les stickers, quelle preuve d'activité!",
+        "indicator": "Pour avoir ce badge, il faut débloquer tous les stickers"
+    }
+}
