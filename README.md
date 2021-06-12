@@ -14,7 +14,9 @@ Xelies is an open-source chat. All messages and tokens are hashed using a strong
 - [X] Join Guild
 - [X] Get Guild by Invite or ID
 - [X] Create Guild
-- [ ] Create Guild Invite
+- [X] Create Guild Invite
+- [X] Delete Guild
+- [X] Permissions
 - [ ] Send DM 
 - [ ] Create Channel
 - [ ] Delete Channel
