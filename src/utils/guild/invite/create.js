@@ -22,7 +22,7 @@ module.exports = (app) => {
             decoded = CheckAuth(req.headers.authorization, req.password)
 
 
-        if (isNaN(guild_id) || isNaN(guild_id)) return res.status(400).json(new ApiError(400, 'the value is not int'))
+        if (isNaN(guild_id) || isNaN(channel_id)) return res.status(400).json(new ApiError(400, 'the value is not int'))
         if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
 
         let server = await guilds.findOne({
