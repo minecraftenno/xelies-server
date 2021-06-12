@@ -73,7 +73,8 @@ const mongoose = require('mongoose'),
         channels: Array,
         invites: Array,
         roles: Array,
-
+        banned: Array,
+        
         CreatedAt: {
 
             default: Date.now(),

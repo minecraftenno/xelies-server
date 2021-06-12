@@ -20,8 +20,8 @@ module.exports = function Authorized(req, res, next) {
 
     if (!ID) return res.status(401).json(ApiError.unauthorized)
 
-    user.findById(ID, (err, doc) => {
-        if (err) return res.status(503).json(ApiError.error)
+    user.findById(ID, (e, doc) => {
+        if (e) return res.status(503).json(ApiError.error), console.error(e)
         if (!doc) return res.status(401).json(ApiError.unauthorized)
         if(!doc.password || doc.password == null) return res.status(401).json(ApiError.unauthorized)
         req.password = doc.password

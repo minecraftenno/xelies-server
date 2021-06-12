@@ -56,7 +56,7 @@ module.exports = (app) => {
             })
         })
 
-        if (!a.includes('ADMINISTRATOR') || !a.includes('CREATE_INVITE')) return res.status(401).json(ApiError.unauthorized)
+        if (!a.includes('ADMINISTRATOR') && !a.includes('CREATE_INVITE')) return res.status(401).json(ApiError.unauthorized)
 
         let create = await invite.create({
             _id: uuid.gen(),
@@ -86,7 +86,7 @@ module.exports = (app) => {
 
             },
 
-            expired: expire
+            expired: Date.now() + expire
 
         })
         if(!create) return res.status(500).json(ApiError.error)

@@ -83,7 +83,7 @@ module.exports = (app) => {
                 default_channel_id: channel._id,
                 system_channel_id: channel._id,
                 channels: [channel._id],
-                roles: [everyone._id]
+                roles: [everyone._id, owner._id]
             })
         user.findByIdAndUpdate(decoded.ID, {
             $push: {
