@@ -4,7 +4,7 @@ const ApiError = require('../../../helpers/ApiError'),
     CheckAuth = require("../../../middlewares/jwt"),
     {
         decrypt
-    } = require("../../../crypto/crypto")
+    } = require("../../../function/crypto")
 
 module.exports = (app) => {
     app.get("/users/@me", Authorized, (req, res) => {

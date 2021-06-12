@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken'),
 ApiError = require('../../helpers/ApiError'),
 user = require('../../models/user.model'),
-crypt = require('../../crypto/crypto'),
+crypt = require('../../function/crypto'),
 bcrypt = require('bcrypt'),
 key = process.env.SECRET || require('../../../c.json').SECRET
 

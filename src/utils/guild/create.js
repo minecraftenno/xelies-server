@@ -1,95 +1,83 @@
-const ApiError = require("../../helpers/ApiError")
-const Authorized = require("../../middlewares/authorization"),
-CheckAuth = require("../../middlewares/jwt"),
-guildSchema = require("../../models/guild.model"),
-userSchema = require("../../models/user.model"),
-channelSchema = require("../../models/channel.model")
+const ApiError = require("../../helpers/ApiError"),
+    Authorized = require("../../middlewares/authorization"),
+    CheckAuth = require("../../middlewares/jwt"),
+    guilds = require("../../models/guild.model"),
+    user = require("../../models/user.model"),
+    channels = require("../../models/channel.model"),
+    roles = require('../../models/roles.model'),
+    uuid = require('../../function/uuid').default
 
 module.exports = (app) => {
-    app.post("/guild/create", Authorized, (req, res) => {
-        if(req.password) {
-            try {
-                CheckAuth(req.headers.authorization, req.password)
-            } catch(e) {
-                return res.status(401).send(ApiError.unauthorized)
-            }
-            let decoded = CheckAuth(req.headers.authorization, req.password)
-         
-            if(decoded == ApiError.error) return res.status(401).send(decoded)
-            decoded = JSON.parse(JSON.stringify(decoded))
-            
-            //CODE
-            userSchema.findById(decoded.ID, (err, data) => {
-                if(err) {
-                    res.send(503).send(ApiError.error)
-                    throw err
-                }else {
+    app.post("/guild", Authorized, async (req, res) => {
 
-                    if(data) {
-                        guildSchema.countDocuments((err2, count) => {
-                  
-                            if(err2) {
-                     
-                                res.send(503).send(ApiError.error)
-                            } else {
+        const {
+            name
+        } = req.body
 
-                                channelSchema.countDocuments((err3, id) => {
+        if (!req.password) return res.status(401).json(ApiError.unauthorized)
 
-                                    //TODO TEMPLATES
-                                    const channel = {
-                                        _id: id++,
-                                        name: "general",
-                                        guild: count++,
-                                        author: data._id,
-                                        type: 0,
-                                        permissions: 0,
-                                        position: 0
-                                    }
+        let decoded = CheckAuth(req.headers.authorization, req.password)
 
-                                     new channelSchema(channel).save((err4, doc) => {
-                                         if(err4) return res.send(ApiError.error).status(500)
-                                        const guild = {
-                                            _id: count + 1,
-                                            name: "Server of " + data.username,
-                                            members: [{
-                                                id: data._id,
-                                                createdAt: data.CreatedAt,
-                                                joinedAt: Date.now(),
-                                                permissions: ["*"],
-                                                nickname: ""
-                                            }],
-                                            channels: [doc._id]
-                                        }
-        
-                                        new guildSchema(guild).save((e, r) => {
-        
-                                            if (e != null) {
-                                                return res.status(500).send(ApiError.error)
-                                            } else {
-                                                userSchema.findByIdAndUpdate(decoded.ID, { $push: { guilds: r._id} }, (err, data) => {
-                                                    if(err) {
-                                                        return res.status(500).send(ApiError.error)
-                                                    } else {
-                                                        return res.status(200).send(r)
-                                                    }
-                                                })
-                                              // 
-                                            }
-                                        })
-                                     })
+        if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
 
-                                })
+        //CODE
+        const d = await user.findById(decoded.ID)
+        if (!d) return res.status(401).json(ApiError.unauthorized)
 
-                                
-                            }                            
-                        })
-                    } else {
-                        res.send(401).send(ApiError.unauthorized)
-                    }
-                }
+        const guild_id = uuid.gen(),
+
+            channel = await channels.create({
+                _id: uuid.gen(),
+                name: "general",
+                guild_id: guild_id,
+                guild_name: name || "Server of " + d.username,
+                rate_limit_per_user: 0,
+                author: decoded.ID,
+                type: 0,
+                permissions: ['SEND_MESSAGE'],
+                position: 0
+            }),
+
+            everyone = await roles.create({
+                _id: uuid.gen(),
+                name: 'everyone',
+                guild: guild_id,
+                permissions: ['SEND_MESSAGE'],
+                color: null,
+                default: true,
+                deletable: false,
+                CreatedAt: Date.now()
+            }),
+
+            guild = await guilds.create({
+                _id: guild_id,
+                name: name || "Server of " + d.username,
+                owner_id: decoded.ID,
+                owner_name: d.username,
+                members: [{
+                    user: {
+                        id: decoded.ID,
+                        username: d.username,
+                        tag: d.tag,
+                        avatar: d.avatar
+                    },
+                    roles: [everyone._id],
+                    nickname: null,
+                    createdAt: d.CreatedAt,
+                    joinedAt: Date.now(),
+                }],
+                default_channel_id: channel._id,
+                system_channel_id: channel._id,
+                channels: [channel._id],
+                roles: [everyone._id]
             })
-        } else {
-            return res.status(401).send(ApiError.unauthorized)
-        }
+        user.findByIdAndUpdate(decoded.ID, {
+            $push: {
+                guilds: guild._id
+            }
+        }, e => {
+            if (e) return res.status(500).json(ApiError.error)
+            return res.status(200).json(guild)
+        })
     })
 }

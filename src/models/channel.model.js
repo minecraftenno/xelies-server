@@ -1,16 +1,44 @@
 const mongoose = require('mongoose')
 
 u = new mongoose.Schema({
-    _id: Number, 
-    name: String,
-    guild: String,
-    author: String,
-    messages: {type: Array, default: []},
+    _id: Number,
+    name: {
+        type: String,
+        required: true
+    },
+    guild_id: {
+        type: Number,
+        required: true
+    },
+    rate_limit_per_user: {
+        type: Number,
+        default: 0,
+        required: true
+    },
+    guild_name: {
+        type: String,
+        required: true
+    },
+    author: Number,
+    messages: {
+        type: Array,
+        default: []
+    },
     type: Number,
-    permissions: Number,
+    permissions: {
+        type: Array
+    },
     position: Number,
-    nsfw: { type: Boolean, default: false },
-    CreatedAt: { type: Date, default: Date.now }
+    nsfw: {
+        type: Boolean,
+        default: false,
+        required: true
+    },
+    CreatedAt: {
+        type: Date,
+        default: Date.now,
+        required: true
+    }
 }, {
     versionKey: false
 })
