@@ -6,13 +6,19 @@ u = new mongoose.Schema({
         type: String,
         required: true
     },
-    guild_id: {
-        type: Number,
-        required: true
+    guild: {
+        id: {
+            type: Number,
+            required: true
+        },
+        name: {
+            type: String,
+            required: true
+        }
     },
-    guild_name: {
+    password: {
         type: String,
-        required: true
+        required: false
     },
     rate_limit_per_user: {
         type: Number,
