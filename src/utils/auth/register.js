@@ -24,8 +24,6 @@ module.exports = app => {
                 }
                 return r
             }
-
-        //check
         if (!username) {
             return res.status(400).json(new ApiError(400, 'No username field found.'))
         } else if (!email) {
@@ -43,7 +41,7 @@ module.exports = app => {
             if (err) throw err
 
             const checkemail = doc.find(a => {
-                if(a.email == null) return;
+                if(a.email == null) return
                 if (crypt.decrypt({
                         iv: a.email.iv,
                         content: a.email.content
@@ -73,7 +71,7 @@ module.exports = app => {
                         password: p
                     }).save(e => {if(e) return res.status(500).json(ApiError.error)})
 
-                   /* mail({
+                    mail({
                         apiKey: process.env.MAILGUN|| require('../../../c.json').MAILGUN,
                         domain: process.env.STMP_DOMAINE|| require('../../../c.json').STMP_DOMAINE
                     }).messages().send({
@@ -84,13 +82,13 @@ module.exports = app => {
                     }, function (e, r) {
                         if (e) return console.error(e)
                         console.log(r)
-                    })*/
+                    })
                     let token = jwt.sign({
                         ID: user_id
                     }, p, {
                         expiresIn: '24h'
                     })
-                    res.cookie("Authorization", token, {maxAge: 86400000, httpOnly: true, signed: true});
+                    res.cookie("Authorization", token, {maxAge: 86400000, httpOnly: true, signed: true})
                     res.status(200).json({
                         token: token
                     })

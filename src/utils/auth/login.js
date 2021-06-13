@@ -43,10 +43,10 @@ module.exports = app => {
             }, d.password, {
               expiresIn: '24h'
             })
-            res.cookie("Authorization", token, {maxAge: 86400000, httpOnly: true, signed: true});
+            res.cookie("Authorization", token, {maxAge: 86400000, httpOnly: true, signed: true})
             res.status(203).json({
               token: token
-            });
+            })
 
           } else return res.status(403).json(new ApiError(403, "Invalid password"))
         })

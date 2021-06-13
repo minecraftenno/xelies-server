@@ -13,13 +13,16 @@ module.exports = (app) => {
     app.post('/guild/:guild_id/:channel_id/invite', auth, async (req, res) => {
 
         if (!req.params) return res.status(400).json(ApiError.badrequest)
-        if (!req.password) return res.status(401).json(ApiError.unauthorized)
+
         const {
             guild_id,
             channel_id
         } = req.params,
 
-            decoded = CheckAuth(req.headers.authorization, req.password)
+        authorization = req.headers.authorization || req.signedCookies.Authorization
+        let decoded = require('../../../middlewares/jwt')(authorization, req.password)
+
+        if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
 
 
         if (isNaN(guild_id) || isNaN(channel_id)) return res.status(400).json(new ApiError(400, 'the value is not int'))

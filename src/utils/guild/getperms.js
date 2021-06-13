@@ -13,7 +13,7 @@ module.exports = (app) => {
         const {
             code
         } = req.params,
-        const authorization = req.headers.authorization || req.signedCookies.Authorization
+        authorization = req.headers.authorization || req.signedCookies.Authorization
 
 
     
@@ -55,7 +55,6 @@ module.exports = (app) => {
 
         } else {
             if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
-
             let server = await guilds.findById(code)
             if (!server) return res.status(404).json(ApiError.notfound)
             if (!await server.members.find(a => a.user.id === decoded.ID)) return res.status(403).json(ApiError.forbidden)
@@ -65,7 +64,6 @@ module.exports = (app) => {
                     $in: server.members.find(a => a.user.id === decoded.ID).roles
                 }
             })
-
             let a = []
             role.forEach(b => {
                 b.permissions.forEach(c => {

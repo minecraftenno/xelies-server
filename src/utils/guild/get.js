@@ -11,7 +11,7 @@ module.exports = (app) => {
         const {
             code
         } = req.params,
-        const authorization = req.headers.authorization || req.signedCookies.Authorization
+        authorization = req.headers.authorization || req.signedCookies.Authorization
 
 
     

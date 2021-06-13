@@ -10,12 +10,13 @@ module.exports = (app) => {
     app.post('/invite/:code', auth, async (req, res) => {
 
             if (!req.params) return res.status(400).json(ApiError.badrequest)
-            if (!req.password) return res.status(401).json(ApiError.unauthorized)
+
             const {
                 code
             } = req.params,
-                decoded = CheckAuth(req.headers.authorization, req.password)
-
+            authorization = req.headers.authorization || req.signedCookies.Authorization
+            let decoded = require('../../../middlewares/jwt')(authorization, req.password)
+    
             if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
 
             let user = await users.findById(decoded.ID)

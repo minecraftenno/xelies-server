@@ -10,11 +10,8 @@ module.exports = (app) => {
     app.get("/users/@me", Authorized, (req, res) => {
 
         if (req.password) {
-            const authorization = req.headers.authorization || req.signedCookies.Authorization
-
-            if (!req.password) return res.status(401).json(ApiError.unauthorized)
-        
-            let decoded = CheckAuth(authorization, req.password)
+            authorization = req.headers.authorization || req.signedCookies.Authorization
+            let decoded = require('../../../middlewares/jwt')(authorization, req.password)
     
             if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
 

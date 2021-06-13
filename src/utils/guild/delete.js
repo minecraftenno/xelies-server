@@ -15,7 +15,7 @@ module.exports = (app) => {
         const {
             code
         } = req.params,
-        const authorization = req.headers.authorization || req.signedCookies.Authorization
+        authorization = req.headers.authorization || req.signedCookies.Authorization
 
         if (!req.password) return res.status(401).json(ApiError.unauthorized)
     
