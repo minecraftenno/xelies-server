@@ -73,7 +73,7 @@ module.exports = app => {
                         password: p
                     }).save(e => {if(e) return res.status(500).json(ApiError.error)})
 
-                   /* mail({
+                   mail({
                         apiKey: process.env.MAILGUN|| require('../../../c.json').MAILGUN,
                         domain: process.env.STMP_DOMAINE|| require('../../../c.json').STMP_DOMAINE
                     }).messages().send({
@@ -84,7 +84,7 @@ module.exports = app => {
                     }, function (e, r) {
                         if (e) return console.error(e)
                         console.log(r)
-                    })*/
+                    })
                     let token = jwt.sign({
                         ID: user_id
                     }, p, {
