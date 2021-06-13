@@ -1,6 +1,5 @@
 const ApiError = require("../../helpers/ApiError"),
     Authorized = require("../../middlewares/authorization"),
-    CheckAuth = require("../../middlewares/jwt"),
     guilds = require("../../models/guild.model"),
     user = require("../../models/user.model"),
     channels = require("../../models/channel.model"),
@@ -13,11 +12,11 @@ module.exports = (app) => {
         const {
             name
         } = req.body,
-        authorization = req.headers.authorization || req.signedCookies.Authorization
+            authorization = req.headers.authorization || req.signedCookies.Authorization
 
         if (!req.password) return res.status(401).json(ApiError.unauthorized)
-    
-        let decoded = require('../../../middlewares/jwt')(authorization, req.password)
+
+        let decoded = require('../../middlewares/jwt')(authorization, req.password)
 
         if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
         //CODE
@@ -29,12 +28,14 @@ module.exports = (app) => {
             channel = await channels.create({
                 _id: uuid.gen(),
                 name: "general",
-                guild_id: guild_id,
-                guild_name: name || "Server of " + d.username,
+                guild: {
+                    id: guild_id,
+                    name: name || "Server of " + d.username
+                },
                 rate_limit_per_user: 0,
                 author: decoded.ID,
                 type: 0,
-                permissions: ['SEND_MESSAGE', 'CREATE_INVITE'],
+                permissions: ['SEND_MESSAGE', 'CREATE_INVITE', 'READ_MESSAGE'],
                 position: 0
             }),
 
@@ -42,7 +43,13 @@ module.exports = (app) => {
                 _id: uuid.gen(),
                 name: 'everyone',
                 guild: guild_id,
-                permissions: ['SEND_MESSAGE', 'CREATE_INVITE'],
+                permissions: [
+                    'SEND_MESSAGE',
+                    'READ_MESSAGE',
+                    'CREATE_INVITE',
+                    'SPEAK',
+                    'CONNECT'
+                ],
                 color: null,
                 default: true,
                 deletable: false,

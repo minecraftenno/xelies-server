@@ -1,6 +1,5 @@
 const ApiError = require('../../../helpers/ApiError'),
     auth = require('../../../middlewares/authorization'),
-    CheckAuth = require('../../../middlewares/jwt'),
     invite = require('../../../models/invite.model')
 
 module.exports = (app) => {

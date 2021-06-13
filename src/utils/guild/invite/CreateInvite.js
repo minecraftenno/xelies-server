@@ -1,6 +1,5 @@
 const ApiError = require('../../../helpers/ApiError'),
     auth = require('../../../middlewares/authorization'),
-    CheckAuth = require('../../../middlewares/jwt'),
     guilds = require('../../../models/guild.model'),
     roles = require('../../../models/roles.model'),
     invite = require('../../../models/invite.model'),

@@ -72,7 +72,10 @@ const mongoose = require('mongoose'),
         }],
         channels: Array,
         invites: Array,
-        roles: Array,
+        roles: [{
+            type: Number,
+            unique: true
+        }],
         banned: Array,
         
         CreatedAt: {

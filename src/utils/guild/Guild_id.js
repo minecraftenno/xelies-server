@@ -1,6 +1,5 @@
 const ApiError = require('../../helpers/ApiError'),
     auth = require('../../middlewares/authorization'),
-    CheckAuth = require('../../middlewares/jwt'),
     guilds = require('../../models/guild.model')
 
 module.exports = (app) => {
@@ -15,7 +14,7 @@ module.exports = (app) => {
 
 
     
-        let decoded = require('../../../middlewares/jwt')(authorization, req.password)
+        let decoded = require('../../middlewares/jwt')(authorization, req.password)
 
         if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
         if (isNaN(code)) return res.status(400).json(new ApiError(400, 'the value is not int'))
