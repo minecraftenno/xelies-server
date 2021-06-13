@@ -1,7 +1,7 @@
 const ApiError = require('../helpers/ApiError'),
-    user = require("../models/user.model")
+    users = require("../models/user.model")
 
-module.exports = function Authorized(req, res, next) {
+module.exports = async function Authorized(req, res, next) {
     var token = req.headers.authorization || req.signedCookies.Authorization
 
     if (!token) return res.status(401).json(ApiError.unauthorized)
@@ -20,11 +20,9 @@ module.exports = function Authorized(req, res, next) {
 
     if (!ID) return res.status(401).json(ApiError.unauthorized)
 
-    user.findById(ID, (e, doc) => {
-        if (e) return res.status(500).json(ApiError.error), console.error(e)
-        if (!doc) return res.status(401).json(ApiError.unauthorized)
-        if(!doc.password || doc.password == null) return res.status(401).json(ApiError.unauthorized)
-        req.password = doc.password
-        next()
-    })
+    let user = await users.findById(ID)
+    if (!user) return res.status(401).json(ApiError.unauthorized)
+    if (!user.password || user.password == null) return res.status(401).json(ApiError.unauthorized)
+    req.password = user.password
+    next()
 }

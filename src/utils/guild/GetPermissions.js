@@ -20,10 +20,7 @@ module.exports = (app) => {
             if (isNaN(code)) return res.status(400).json(new ApiError(400, 'the value is not int'))
 
         if (Number(req.query.user)) {
-            console.log('yes')
             if (isNaN(Number(req.query.user))) return res.status(400).json(new ApiError(400, 'the value is not int'))
-
-  
 
             let server = await guilds.findById(code)
             if (!server) return res.status(404).json(ApiError.notfound)
