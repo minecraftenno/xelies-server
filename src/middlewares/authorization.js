@@ -2,7 +2,7 @@ const ApiError = require('../helpers/ApiError'),
     user = require("../models/user.model")
 
 module.exports = function Authorized(req, res, next) {
-    var token = req.headers.authorization || req.signedCookies.Authorization;
+    var token = req.headers.authorization || req.signedCookies.Authorization
 
     if (!token) return res.status(401).json(ApiError.unauthorized)
 

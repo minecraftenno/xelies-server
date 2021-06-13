@@ -14,9 +14,6 @@ module.exports = (app) => {
             code
         } = req.params,
         authorization = req.headers.authorization || req.signedCookies.Authorization
-
-
-    
         let decoded = require('../../../middlewares/jwt')(authorization, req.password)
 
         if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)

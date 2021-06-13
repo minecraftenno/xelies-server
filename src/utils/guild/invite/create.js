@@ -13,7 +13,7 @@ module.exports = (app) => {
     app.post('/guild/:guild_id/:channel_id/invite', auth, async (req, res) => {
 
         if (!req.params) return res.status(400).json(ApiError.badrequest)
-
+        if (!req.password) return res.status(401).json(ApiError.unauthorized)
         const {
             guild_id,
             channel_id

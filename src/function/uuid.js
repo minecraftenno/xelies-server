@@ -17,4 +17,4 @@ const flakeid = require("flakeid")
 
 const flake = new flakeid()
 
-exports.default = flake;
+exports.default = flake

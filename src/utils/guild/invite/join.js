@@ -10,7 +10,7 @@ module.exports = (app) => {
     app.post('/invite/:code', auth, async (req, res) => {
 
             if (!req.params) return res.status(400).json(ApiError.badrequest)
-
+            if (!req.password) return res.status(401).json(ApiError.unauthorized)
             const {
                 code
             } = req.params,
