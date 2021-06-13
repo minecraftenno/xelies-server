@@ -1,5 +1,5 @@
 {
-    "MONGO": "mongodb+srv://ramokadmin:v03hi9BPF9m10qVp@cluster0.4zaie.mongodb.net/chat?authSource=admin&replicaSet=atlas-o8947l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true",
+    "MONGO": "mongodb+srv://ramokadmin:jJRzMekZeGQlw3y9@cluster0.4zaie.mongodb.net/chat?authSource=admin&replicaSet=atlas-o8947l-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true",
     "SECRET": "47855478745874444785547874587444",
     "MAILGUN": "",
     "STMP_DOMAINE": ""

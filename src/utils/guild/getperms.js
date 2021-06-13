@@ -54,8 +54,6 @@ module.exports = (app) => {
             })
 
         } else {
-            console.log('no')
-
             if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
 
             let server = await guilds.findById(code)
