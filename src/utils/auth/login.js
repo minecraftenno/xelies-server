@@ -37,16 +37,16 @@ module.exports = app => {
         
         bcrypt.compare(password, d.password, (e, r) => {
           if(e) return res.status(500).json(ApiError.error)
-          if (r) {
+          if (r == true) {
             let token = jwt.sign({
               ID: d._id
             }, d.password, {
               expiresIn: '24h'
             })
-
+            res.cookie("Authorization", token, {maxAge: 86400000, httpOnly: true, signed: true});
             res.status(203).json({
               token: token
-            })
+            });
 
           } else return res.status(403).json(new ApiError(403, "Invalid password"))
         })

@@ -6,9 +6,7 @@ const ApiError = require('../../../helpers/ApiError'),
 module.exports = app => {
 
     app.post('/@me/relationship/:to', auth, (req, res) => {
-        const {
-            authorization
-        } = req.headers, {
+        const authorization = req.headers.authorization || req.signedCookies.Authorization, {
             to
         } = req.params
         if (!req.password) return res.status(401).json(ApiError.unauthorized)

@@ -6,14 +6,13 @@ const ApiError = require('../../../helpers/ApiError'),
 module.exports = app => {
   app.delete("/users/@me", auth, (req, res) => {
     if (req.password) {
-      try {
-        CheckAuth(req.headers.authorization, req.password)
-      } catch (e) {
-        return res.status(401).json(ApiError.unauthorized)
-      }
-      let decoded = CheckAuth(req.headers.authorization, req.password)
-      if (decoded == ApiError.error) return res.status(503).json(decoded)
-      decoded = JSON.parse(JSON.stringify(decoded))
+      const authorization = req.headers.authorization || req.signedCookies.Authorization
+
+      if (!req.password) return res.status(401).json(ApiError.unauthorized)
+  
+      let decoded = require('../../../middlewares/jwt')(authorization, req.password)
+
+      if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
       user.findById(decoded.ID, (e, doc) => {
         if (e) return res.status(500).json(ApiError.error)
         if (!doc) return res.status(500).json(ApiError.error)

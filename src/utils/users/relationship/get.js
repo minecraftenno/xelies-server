@@ -7,11 +7,10 @@ const ApiError = require('../../../helpers/ApiError'),
 module.exports = app => {
 
     app.get('/@me/relationship/', auth, async (req, res) => {
-        const {
-            authorization
-        } = req.headers
-        if (!req.password) return res.status(401).json(ApiError.unauthorized)
+        const authorization = req.headers.authorization || req.signedCookies.Authorization
 
+        if (!req.password) return res.status(401).json(ApiError.unauthorized)
+    
         let decoded = require('../../../middlewares/jwt')(authorization, req.password)
 
         if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)

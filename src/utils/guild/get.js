@@ -11,10 +11,16 @@ module.exports = (app) => {
         const {
             code
         } = req.params,
-            decoded = CheckAuth(req.headers.authorization, req.password)
-        if (isNaN(code)) return res.status(400).json(new ApiError(400, 'the value is not int'))
+        const authorization = req.headers.authorization || req.signedCookies.Authorization
+
+
+    
+        let decoded = require('../../../middlewares/jwt')(authorization, req.password)
 
         if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
+        if (isNaN(code)) return res.status(400).json(new ApiError(400, 'the value is not int'))
+
+
 
         let server = await guilds.findById(code)
         if (!server) return res.status(404).json(ApiError.notfound)

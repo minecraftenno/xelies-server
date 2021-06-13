@@ -9,17 +9,24 @@ module.exports = (app) => {
 
         if (!req.params) return res.status(400).json(ApiError.badrequest)
         if (!req.password) return res.status(401).json(ApiError.unauthorized)
+        
         const {
             code
         } = req.params,
-            decoded = CheckAuth(req.headers.authorization, req.password)
+        const authorization = req.headers.authorization || req.signedCookies.Authorization
+
+
+    
+        let decoded = require('../../../middlewares/jwt')(authorization, req.password)
+
+        if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
             if (isNaN(code)) return res.status(400).json(new ApiError(400, 'the value is not int'))
 
         if (Number(req.query.user)) {
             console.log('yes')
             if (isNaN(Number(req.query.user))) return res.status(400).json(new ApiError(400, 'the value is not int'))
 
-            if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
+  
 
             let server = await guilds.findById(code)
             if (!server) return res.status(404).json(ApiError.notfound)

@@ -10,19 +10,13 @@ module.exports = (app) => {
     app.get("/users/@me", Authorized, (req, res) => {
 
         if (req.password) {
-            console.log(CheckAuth(req.headers.authorization, req.password))
-            try {
+            const authorization = req.headers.authorization || req.signedCookies.Authorization
 
-                CheckAuth(req.headers.authorization, req.password)
-
-            } catch (e) {
-                return res.status(401).send(ApiError.unauthorized)
-            }
-            let decoded = CheckAuth(req.headers.authorization, req.password)
-
-            if (decoded == ApiError.error) return res.status(503).send(decoded)
-
-            decoded = JSON.parse(JSON.stringify(decoded))
+            if (!req.password) return res.status(401).json(ApiError.unauthorized)
+        
+            let decoded = CheckAuth(authorization, req.password)
+    
+            if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
 
             userm.findById(decoded.ID, (e, doc) => {
                 if (e) return res.status(503).send(ApiError.error)
@@ -41,7 +35,7 @@ module.exports = (app) => {
                         friends: doc.friends,
                         notifications: doc.notifications,
                         guilds: doc.guilds,
-                        CreatedAd: doc.CreatedAt
+                        CreatedAt: doc.CreatedAt
                     }
                 })
             })

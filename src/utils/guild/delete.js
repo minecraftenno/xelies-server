@@ -11,14 +11,20 @@ module.exports = (app) => {
     app.delete('/guild/:code', auth, async (req, res) => {
 
         if (!req.params) return res.status(400).json(ApiError.badrequest)
-        if (!req.password) return res.status(401).json(ApiError.unauthorized)
+
         const {
             code
         } = req.params,
-            decoded = CheckAuth(req.headers.authorization, req.password)
-        if (isNaN(code)) return res.status(400).json(new ApiError(400, 'the value is not int'))
+        const authorization = req.headers.authorization || req.signedCookies.Authorization
+
+        if (!req.password) return res.status(401).json(ApiError.unauthorized)
+    
+        let decoded = require('../../../middlewares/jwt')(authorization, req.password)
 
         if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
+        if (isNaN(code)) return res.status(400).json(new ApiError(400, 'the value is not int'))
+
+
 
         let server = await guilds.findById(code)
         if (!server) return res.status(404).json(ApiError.notfound)

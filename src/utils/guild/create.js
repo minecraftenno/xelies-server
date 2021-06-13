@@ -13,13 +13,13 @@ module.exports = (app) => {
         const {
             name
         } = req.body
+        const authorization = req.headers.authorization || req.signedCookies.Authorization
 
         if (!req.password) return res.status(401).json(ApiError.unauthorized)
-
-        let decoded = CheckAuth(req.headers.authorization, req.password)
+    
+        let decoded = require('../../../middlewares/jwt')(authorization, req.password)
 
         if (!decoded.ID) return res.status(401).json(ApiError.unauthorized)
-
         //CODE
         const d = await user.findById(decoded.ID)
         if (!d) return res.status(401).json(ApiError.unauthorized)
