@@ -5,6 +5,17 @@ const jwt = require('jsonwebtoken'),
   bcrypt = require('bcrypt'),
   key = process.env.SECRET || require('../../../c.json').SECRET
 
+/*
+ ___               ___ 
+|  _|             |_  |
+| |     __ _ ___    | |
+| |    / _` / __|   | |
+| |   | (_| \__ \   | |
+| |_   \__,_|___/  _| |
+|___|             |___|
+                       
+*/
+
 module.exports = app => {
   app.post('/login', async (req, res) => {
     if (!JSON.stringify(req.body)) return res.status(400).json(ApiError.badrequest)
